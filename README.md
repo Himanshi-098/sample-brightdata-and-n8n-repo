@@ -30,19 +30,9 @@ For each lead we store:
 - **Email Output**: subject, HTML body, CTA, follow‑up notes
 - **Status**: qualified (true/false), disqualified reason, timestamps
 
-
-
-Single source of truth in Google Sheets.
 ---
 
 ## 🧩 Workflows
-
-| File                  | Purpose |
-|-----------------------|---------|
-| `workflows/main-agent.json`   | Orchestrates jobs, routes data to helper workflows, aggregates results. |
-| `workflows/scraper.json`      | Scrapes websites, APIs, or Bright Data sources. |
-| `workflows/enrichment.json`   | Uses LLM (OpenAI/Gemini) to parse, summarize, and enrich raw data. |
-| `workflows/updater.json`      | Writes cleaned insights back to Google Sheets / sends chat updates. |
 
 ### 1. Lead Generation (`workflows/main-agent.json`)
 
@@ -74,10 +64,6 @@ Single source of truth in Google Sheets.
 - Includes: Subject line, body, CTA, follow-up notes
 - Compiles comprehensive lead profiles
 
-
-
-
-
 ---
 
 ## 📊 Output Data
@@ -91,13 +77,14 @@ Each processed lead includes:
 - Formatted HTML email content
 - Follow-up recommendations
 
+---
+
 ## 📈 Results
 All processed leads are automatically uploaded to Google Sheets with complete qualification status and ready-to-use email templates.
 
 *Built for efficient B2B lead generation and personalized outreach at scale.*
 
 ---
-
 
 ## 🎬 Demo / Live Access
 
