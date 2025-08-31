@@ -1,15 +1,38 @@
-# Sample automation (n8n Workflows)
+# Lead Gen + Qualification + Hyper‑Personalized Emails (n8n Workflows)
 
-xxxx.
+End‑to‑end automation that:
+- Scrapes leads from Google Maps (by Neighborhood + Industry)
+- Enriches & cross‑verifies companies via Bright Data SERP + Apollo
+- Scrapes websites (company site + Owler when available) and captures emails
+- Generates HTML cold emails (Subject, Body, CTA, Follow‑ups) tailored to each lead
+- Uploads everything to Google Sheets and flags Qualified/Disqualified leads
+
+Built with **n8n**, **Bright Data** (Google Maps & SERP + website snapshot), Apollo API, an LLM (provider‑agnostic), and **Google Sheets API**.
 
 ---
 
 ## 🚀 Features
-- **Agent Orchestration**: Main workflow coordinates all supporting flows.  
-- **Web Data Collection**: Uses Bright Data and HTTP Request nodes to scrape competitor sites, news, and market updates.  
-- **AI Enrichment**: LLM-powered summarization, classification, and scoring of raw data.  
-- **Output Interface**: Pushes processed results into Google Sheets or chat UI.  
+- **Lead Generation**: Automated scraping from Google Maps using neighborhood and industry queries
+- **Lead Enrichment**: Multi-source data enrichment with intelligent verification
+- **Email Personalization**: AI-powered cold email generation with HTML formatting
+- **Lead Qualification**: Automated filtering based on available contact information
+- **Data Management**: Seamless Google Sheets integration for lead tracking
 
+---
+
+## What Gets Stored
+
+For each lead we store:
+- **Company**: name, domain, address, city, neighborhood, rating
+- **Identifiers**: Owler URL (when found), snapshot URL, source links
+- **Enrichment**: revenue, employee count, socials, phone, founded year
+- **Contacts**: email(s) captured from site (or disqualification reason)
+- **Email Output**: subject, HTML body, CTA, follow‑up notes
+- **Status**: qualified (true/false), disqualified reason, timestamps
+
+
+
+Single source of truth in Google Sheets.
 ---
 
 ## 🧩 Workflows
@@ -21,32 +44,57 @@ xxxx.
 | `workflows/enrichment.json`   | Uses LLM (OpenAI/Gemini) to parse, summarize, and enrich raw data. |
 | `workflows/updater.json`      | Writes cleaned insights back to Google Sheets / sends chat updates. |
 
+### 1. Lead Generation (`workflows/main-agent.json`)
+
+- Scrapes Google Maps using BrightData
+- Input: Neighborhood + Industry search queries
+- Output: Business name, address, website, city, neighborhood, ratings
+
+### 2. Lead Enrichment (`workflows/main-agent.json`)
+**Primary Path (with Owler)**:
+
+- Google search for Owler company profiles
+- LLM analyzes search results to identify best Owler link
+- Scrapes Owler data using BrightData
+- Cross-verifies with Apollo for revenue, employee count, socials
+- Scrapes company website for email addresses
+- Qualified: Leads with valid email addresses
+- Disqualified: Leads without discoverable contact information
+- Creates hyper-personalized HTML email content
+- Includes: Subject line, body, CTA, follow-up notes
+- Compiles comprehensive lead profiles
+
+**Fallback Path (without Owler)**:
+
+- Direct Apollo search for company enrichment
+- Scrapes company website for email addresses
+- Qualified: Leads with valid email addresses
+- Disqualified: Leads without discoverable contact information
+- Creates hyper-personalized HTML email content
+- Includes: Subject line, body, CTA, follow-up notes
+- Compiles comprehensive lead profiles
+
+
+
+
+
 ---
 
-## 🛠️ Setup Instructions
+## 📊 Output Data
 
-1. **Clone the repository**
+Each processed lead includes:
+- Complete company details
+- Email address (if found)
+- Lead summary and qualification status
+- Employee count and founding year
+- Phone number
+- Formatted HTML email content
+- Follow-up recommendations
 
-   git clone https://github.com/<your-username>/brightdata-n8n-agent.git
+## 📈 Results
+All processed leads are automatically uploaded to Google Sheets with complete qualification status and ready-to-use email templates.
 
-   cd brightdata-n8n-agent
-
-3. **Set environment variables**
-   Copy env/.env.example → env/.env and fill in your keys:
-
-   - BRIGHT_DATA_API_KEY=your_key
-   - OPENAI_API_KEY=your_key
-   - GEMINI_API_KEY=your_key
-
-*Note*: "This workflow is sanitized. Replace YOUR_SHEET_ID, YOUR_API_KEY_HERE, and REDACTED within n8n (Credentials/UI) before running."
-
-3. **Import into n8n**
-   In n8n → Workflows → Import from File → select JSONs from /workflows/.
-
-   Update credentials in n8n Credentials UI (Bright Data, Google Sheets, LLM, etc.).
-
-5. **Run the agent**
-   Execute main-agent.json → it will trigger the scraper, enrichment, and updater flows.
+*Built for efficient B2B lead generation and personalized outreach at scale.*
 
 ---
 
@@ -62,6 +110,3 @@ Demo Video: [Add Loom/YouTube link here]
 <img width="808" height="338" alt="image" src="https://github.com/user-attachments/assets/8cf60994-0330-4a09-bbd4-0507e928ed43" />
 
 
-# 🧾 License
-
-This project is licensed under the MIT License – see [LICENSE](LICENSE).
