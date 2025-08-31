@@ -28,15 +28,17 @@ Automated **n8n workflows** that collect real-time market data, enrich it using 
 1. **Clone the repository**
 
    git clone https://github.com/<your-username>/brightdata-n8n-agent.git
+
    cd brightdata-n8n-agent
 
-2. **Set environment variables**
+3. **Set environment variables**
    Copy env/.env.example → env/.env and fill in your keys:
 
    - BRIGHT_DATA_API_KEY=your_key
    - OPENAI_API_KEY=your_key
    - GEMINI_API_KEY=your_key
 
+*Note*: "This workflow is sanitized. Replace YOUR_SHEET_ID, YOUR_API_KEY_HERE, and REDACTED within n8n (Credentials/UI) before running."
 
 3. **Import into n8n**
    In n8n → Workflows → Import from File → select JSONs from /workflows/.
