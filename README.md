@@ -23,48 +23,27 @@ Automated **n8n workflows** that collect real-time market data, enrich it using 
 
 ---
 
-## 📁 Repo Structure
-
-workflows/
-├── main-agent.json
-├── scraper.json
-├── enrichment.json
-└── updater.json
-
-env/.env.example
-docs/
-└── architecture.png # Add your architecture diagram here
-README.md
-LICENSE
-.gitignore
-
-
----
-
 ## 🛠️ Setup Instructions
 
 1. **Clone the repository**
-   ```bash
+
    git clone https://github.com/<your-username>/brightdata-n8n-agent.git
    cd brightdata-n8n-agent
 
-2. Set environment variables
-Copy env/.env.example → env/.env and fill in your keys:
+2. **Set environment variables**
+   Copy env/.env.example → env/.env and fill in your keys:
 
-BRIGHT_DATA_API_KEY=your_key
-OPENAI_API_KEY=your_key
-GEMINI_API_KEY=your_key
+   BRIGHT_DATA_API_KEY=your_key
+   OPENAI_API_KEY=your_key
+   GEMINI_API_KEY=your_key
 
 
-3. Import into n8n
+3. **Import into n8n**
+   In n8n → Workflows → Import from File → select JSONs from /workflows/.
+   Update credentials in n8n Credentials UI (Bright Data, Google Sheets, LLM, etc.).
 
-In n8n → Workflows → Import from File → select JSONs from /workflows/.
-
-Update credentials in n8n Credentials UI (Bright Data, Google Sheets, LLM, etc.).
-
-4. Run the agent
-
-Execute main-agent.json → it will trigger the scraper, enrichment, and updater flows.
+4. **Run the agent**
+   Execute main-agent.json → it will trigger the scraper, enrichment, and updater flows.
 
 ---
 
