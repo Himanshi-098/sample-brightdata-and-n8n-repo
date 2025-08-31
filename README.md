@@ -1,6 +1,6 @@
-# Market Intelligence AI Agent (n8n Workflows)
+# Sample automation (n8n Workflows)
 
-Automated **n8n workflows** that collect real-time market data, enrich it using LLMs, and deliver actionable insights to your workspace or Google Sheets.
+xxxx.
 
 ---
 
