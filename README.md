@@ -20,7 +20,7 @@ Built with **n8n**, **Bright Data** (Google Maps & SERP + website snapshot), Apo
 
 ---
 
-## What Gets Stored
+## 📋 What Gets Stored
 
 For each lead we store:
 - **Company**: name, domain, address, city, neighborhood, rating
