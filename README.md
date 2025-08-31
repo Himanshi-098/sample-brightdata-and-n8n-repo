@@ -47,7 +47,8 @@ LICENSE
    ```bash
    git clone https://github.com/<your-username>/brightdata-n8n-agent.git
    cd brightdata-n8n-agent
-Set environment variables
+
+2. Set environment variables
 Copy env/.env.example → env/.env and fill in your keys:
 
 BRIGHT_DATA_API_KEY=your_key
@@ -55,24 +56,30 @@ OPENAI_API_KEY=your_key
 GEMINI_API_KEY=your_key
 
 
-Import into n8n
+3. Import into n8n
 
 In n8n → Workflows → Import from File → select JSONs from /workflows/.
 
 Update credentials in n8n Credentials UI (Bright Data, Google Sheets, LLM, etc.).
 
-Run the agent
+4. Run the agent
 
 Execute main-agent.json → it will trigger the scraper, enrichment, and updater flows.
 
-🎬 Demo / Live Access
+---
+
+
+## 🎬 Demo / Live Access
 
 Demo Video: [Add Loom/YouTube link here]
 
-📷 Architecture Diagram
+---
 
-(Put your diagram or screenshot inside docs/architecture.png)
+## 📷 Architecture Diagram
 
-🧾 License
+<img width="808" height="338" alt="image" src="https://github.com/user-attachments/assets/8cf60994-0330-4a09-bbd4-0507e928ed43" />
+
+
+# 🧾 License
 
 This project is licensed under the MIT License – see [LICENSE](LICENSE).
