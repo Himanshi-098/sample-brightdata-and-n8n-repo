@@ -1,13 +1,3 @@
-# Sanitize the user-provided n8n workflow JSON.
-# - Redact Google Sheet IDs & URLs
-# - Replace API keys in headers with placeholder
-# - Redact n8n internal IDs (versionId, instanceId, webhookId)
-# - Redact credential IDs/names
-# - Save a sanitized JSON for download
-
-import json, re, os
-
-raw = r'''
 {
   "name": "LinkedIn Finder and Google sheet updates",
   "nodes": [
@@ -22,17 +12,17 @@ raw = r'''
         },
         "documentId": {
           "__rl": true,
-          "value": "1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk",
+          "value": "YOUR_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Leads and personalized msgs",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1153597782,
           "mode": "list",
           "cachedResultName": "Marketing agency from clutch",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk/edit#gid=1153597782"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=1153597782"
         },
         "event": "rowAdded",
         "options": {}
@@ -47,8 +37,8 @@ raw = r'''
       "name": "Google Sheets Trigger",
       "credentials": {
         "googleSheetsTriggerOAuth2Api": {
-          "id": "xx",
-          "name": "Google Sheets Trigger account"
+          "id": "REDACTED",
+          "name": "REDACTED"
         }
       }
     },
@@ -70,17 +60,17 @@ raw = r'''
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk",
+          "value": "YOUR_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Leads and personalized msgs",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -95,21 +85,141 @@ raw = r'''
           },
           "matchingColumns": [],
           "schema": [
-            { "id": "Source", "displayName": "Source", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Company Name", "displayName": "Company Name", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Company Size", "displayName": "Company Size", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Linkedin Followers", "displayName": "Linkedin Followers", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Instagram Followers", "displayName": "Instagram Followers", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Person Name", "displayName": "Person Name", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Person Postion", "displayName": "Person Postion", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Company linkedin URL", "displayName": "Company linkedin URL", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Person Linkedin URL", "displayName": "Person Linkedin URL", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Personalized message", "displayName": "Personalized message", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Notes", "displayName": "Notes", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Status", "displayName": "Status", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Platform", "displayName": "Platform", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Reply", "displayName": "Reply", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Follow up msg", "displayName": "Follow up msg", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true }
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company Size",
+              "displayName": "Company Size",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Linkedin Followers",
+              "displayName": "Linkedin Followers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Instagram Followers",
+              "displayName": "Instagram Followers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Person Name",
+              "displayName": "Person Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Person Postion",
+              "displayName": "Person Postion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company linkedin URL",
+              "displayName": "Company linkedin URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Person Linkedin URL",
+              "displayName": "Person Linkedin URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Personalized message",
+              "displayName": "Personalized message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Platform",
+              "displayName": "Platform",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reply",
+              "displayName": "Reply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Follow up msg",
+              "displayName": "Follow up msg",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
           ],
           "attemptToConvertTypes": false,
           "convertFieldsToString": false
@@ -118,13 +228,16 @@ raw = r'''
       },
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
-      "position": [1216, 16],
+      "position": [
+        1216,
+        16
+      ],
       "id": "a602ce96-a2d4-47b1-8b0a-6a18381618dd",
       "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "xx",
-          "name": "Google Sheets account"
+          "id": "REDACTED",
+          "name": "REDACTED"
         }
       }
     },
@@ -135,29 +248,37 @@ raw = r'''
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "X-API-KEY", "value": "xx" }
+            {
+              "name": "X-API-KEY",
+              "value": "YOUR_API_KEY_HERE"
+            }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\\n  \\\"q\\\": \\\"{{ $json['Company Name'] }} founder OR director OR CEO site:linkedin.com/in\\\",\\n  \\\"num\\\": 10\\n}\\n",
-        "options": { "allowUnauthorizedCerts": false }
+        "jsonBody": "={\n  \"q\": \"{{ $json['Company Name'] }} founder OR director OR CEO site:linkedin.com/in\",\n  \"num\": 10\n}\n",
+        "options": {
+          "allowUnauthorizedCerts": false
+        }
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [640, 16],
+      "position": [
+        640,
+        16
+      ],
       "id": "c531ce07-c198-471b-9a7d-e095e9485dc4",
       "name": "HTTP Request"
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=- Company Name: {{ $('Google Sheets Trigger').item.json['Company Name'] }}\\n- Employee Size: {{ $('Google Sheets Trigger').item.json['Team Size'] }}\\n\\n\\n[\\n  {\\n    \\\"type\\\": \\\"text\\\",\\n    \\\"text\\\":\\n      \\\"{{ JSON.stringify($json['organic']) }}\\n\\\"\\n  }\\n]\\n",
+        "text": "=- Company Name: {{ $('Google Sheets Trigger').item.json['Company Name'] }}\n- Employee Size: {{ $('Google Sheets Trigger').item.json['Team Size'] }}\n\n\n[\n  {\n    \"type\": \"text\",\n    \"text\":\n      \"{{ JSON.stringify($json['organic']) }}\n\"\n  }\n]\n",
         "hasOutputParser": true,
         "messages": {
           "messageValues": [
             {
-              "message": "You are a LinkedIn URL finder and analyzer.  You will receive Google search results and must identify which link best matches the LinkedIn profile of the given person.   \\nInstructions:  \\n1. Look for the LinkedIn profile that matches the person’s name AND the company domain.  \\n2. If there is a clear match, return that LinkedIn profile URL. If Found then provide the person's name and their role/position in the company as well\\n3. If no relevant profile exists then Write \\\"Not Found\\\"\\n\\n\\n\\n\\n\\n"
+              "message": "You are a LinkedIn URL finder and analyzer.  You will receive Google search results and must identify which link best matches the LinkedIn profile of the given person.   \nInstructions:  \n1. Look for the LinkedIn profile that matches the person’s name AND the company domain.  \n2. If there is a clear match, return that LinkedIn profile URL. If Found then provide the person's name and their role/position in the company as well\n3. If no relevant profile exists then Write \"Not Found\"\n\n\n\n\n\n"
             }
           ]
         },
@@ -165,37 +286,57 @@ raw = r'''
       },
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.7,
-      "position": [832, 16],
+      "position": [
+        832,
+        16
+      ],
       "id": "482b0f65-3107-4e04-a931-910f274fab95",
       "name": "Basic LLM Chain"
     },
     {
-      "parameters": { "modelName": "models/gemini-2.5-pro", "options": {} },
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
-      "position": [832, 240],
+      "position": [
+        832,
+        240
+      ],
       "id": "2af0a1e9-433d-4bd9-96fc-a575e0ea5897",
       "name": "Google Gemini Chat Model",
       "credentials": {
-        "googlePalmApi": { "id": "xx", "name": "Google Gemini(PaLM) Api account" }
+        "googlePalmApi": {
+          "id": "REDACTED",
+          "name": "REDACTED"
+        }
       }
     },
     {
       "parameters": {
         "schemaType": "manual",
-        "inputSchema": "{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"linkedin URL\\\": { \\\"type\\\": \\\"string\\\" },\\n    \\\"Name\\\": { \\\"type\\\": \\\"string\\\" },\\n    \\\"Role\\\": { \\\"type\\\": \\\"string\\\" }\\n  },\\n  \\\"required\\\": [\\\"linkedin URL\\\"]\\n}\\n"
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"linkedin URL\": { \"type\": \"string\" },\n    \"Name\": { \"type\": \"string\" },\n    \"Role\": { \"type\": \"string\" }\n  },\n  \"required\": [\"linkedin URL\"]\n}\n"
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
-      "position": [1024, 240],
+      "position": [
+        1024,
+        240
+      ],
       "id": "112e7bae-41d2-45e5-85fc-029bc2daaa1b",
       "name": "Structured Output Parser"
     },
     {
-      "parameters": { "options": {} },
+      "parameters": {
+        "options": {}
+      },
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
-      "position": [576, 640],
+      "position": [
+        576,
+        640
+      ],
       "id": "64fa47d7-eef8-4b83-9fa6-d5da0e9460f7",
       "name": "Loop Over Items1"
     },
@@ -206,29 +347,37 @@ raw = r'''
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "X-API-KEY", "value": "xx" }
+            {
+              "name": "X-API-KEY",
+              "value": "YOUR_API_KEY_HERE"
+            }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\\n  \\\"q\\\": \\\"{{ $json['Agency Name'] }} founder OR director OR CEO site:linkedin.com/in\\\",\\n  \\\"num\\\": 10\\n}\\n",
-        "options": { "allowUnauthorizedCerts": false }
+        "jsonBody": "={\n  \"q\": \"{{ $json['Agency Name'] }} founder OR director OR CEO site:linkedin.com/in\",\n  \"num\": 10\n}\n",
+        "options": {
+          "allowUnauthorizedCerts": false
+        }
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [800, 656],
+      "position": [
+        800,
+        656
+      ],
       "id": "663f2292-0363-499c-910b-35417482d304",
       "name": "HTTP Request1"
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=- Company Name: {{ $('Get row(s) in sheet').item.json['Agency Name'] }}\\n\\n\\n[\\n  {\\n    \\\"type\\\": \\\"text\\\",\\n    \\\"text\\\":\\n      \\\"{{ JSON.stringify($json['organic']) }}\\n\\\"\\n  }\\n]\\n",
+        "text": "=- Company Name: {{ $('Get row(s) in sheet').item.json['Agency Name'] }}\n\n\n[\n  {\n    \"type\": \"text\",\n    \"text\":\n      \"{{ JSON.stringify($json['organic']) }}\n\"\n  }\n]\n",
         "hasOutputParser": true,
         "messages": {
           "messageValues": [
             {
-              "message": "You are a LinkedIn URL finder and analyzer.  You will receive Google search results and must identify which link best matches the LinkedIn profile of the given person.   \\nInstructions:  \\n1. Look for the LinkedIn profile that matches the person’s name AND the company domain.  \\n2. If there is a clear match, return that LinkedIn profile URL. If Found then provide the person's name and their role/position in the company as well.  If available then provide the estimated number of employees in the company\\n3. If no relevant profile exists then Write \\\"Not Found\\\"\\n\\n\\n\\n\\n\\n"
+              "message": "You are a LinkedIn URL finder and analyzer.  You will receive Google search results and must identify which link best matches the LinkedIn profile of the given person.   \nInstructions:  \n1. Look for the LinkedIn profile that matches the person’s name AND the company domain.  \n2. If there is a clear match, return that LinkedIn profile URL. If Found then provide the person's name and their role/position in the company as well.  If available then provide the estimated number of employees in the company\n3. If no relevant profile exists then Write \"Not Found\"\n\n\n\n\n\n"
             }
           ]
         },
@@ -236,29 +385,44 @@ raw = r'''
       },
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.7,
-      "position": [992, 656],
+      "position": [
+        992,
+        656
+      ],
       "id": "560511ad-ec60-46c2-9ba0-2388879ef31d",
       "name": "Basic LLM Chain1"
     },
     {
-      "parameters": { "modelName": "models/gemini-2.5-pro", "options": {} },
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
-      "position": [992, 880],
+      "position": [
+        992,
+        880
+      ],
       "id": "3be6edf8-eb6a-4e95-b25c-b76fe25ede12",
       "name": "Google Gemini Chat Model1",
       "credentials": {
-        "googlePalmApi": { "id": "xx", "name": "Google Gemini(PaLM) Api account" }
+        "googlePalmApi": {
+          "id": "REDACTED",
+          "name": "REDACTED"
+        }
       }
     },
     {
       "parameters": {
         "schemaType": "manual",
-        "inputSchema": "{\\n  \\\"type\\\": \\\"object\\\",\\n  \\\"properties\\\": {\\n    \\\"linkedin URL\\\": { \\\"type\\\": \\\"string\\\" },\\n    \\\"Name\\\": { \\\"type\\\": \\\"string\\\" },\\n    \\\"Role\\\": { \\\"type\\\": \\\"string\\\" },\\n    \\\"Number of Employees\\\": { \\\"type\\\": \\\"string\\\" }\\n  },\\n  \\\"required\\\": [\\\"linkedin URL\\\"]\\n}"
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"linkedin URL\": { \"type\": \"string\" },\n    \"Name\": { \"type\": \"string\" },\n    \"Role\": { \"type\": \"string\" },\n    \"Number of Employees\": { \"type\": \"string\" }\n  },\n  \"required\": [\"linkedin URL\"]\n}"
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
-      "position": [1184, 880],
+      "position": [
+        1184,
+        880
+      ],
       "id": "25b4034d-d3a6-4ed6-99d4-de5d5cfd9cf9",
       "name": "Structured Output Parser1"
     },
@@ -266,203 +430,34 @@ raw = r'''
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk",
+          "value": "YOUR_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Leads and personalized msgs",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 885876273,
           "mode": "list",
           "cachedResultName": "Instagram leads",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk/edit#gid=885876273"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=885876273"
         },
         "filtersUI": {
           "values": [
-            { "lookupColumn": "Person Linkedin URL" }
+            {
+              "lookupColumn": "Person Linkedin URL"
+            }
           ]
         },
         "options": {}
       },
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
-      "position": [352, 640],
+      "position": [
+        352,
+        640
+      ],
       "id": "a80604ac-1924-4552-a670-bfa8addb2a8b",
       "name": "Get row(s) in sheet",
       "credentials": {
-        "googleSheetsOAuth2Api": { "id": "xx", "name": "Google Sheets account" }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "documentId": {
-          "__rl": true,
-          "value": "1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk",
-          "mode": "list",
-          "cachedResultName": "Leads and personalized msgs",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 885876273,
-          "mode": "list",
-          "cachedResultName": "Instagram leads",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZadRjFgouDAuu8HxBF8fTI_ojPkDQlOzN4gcOJ1MqWk/edit#gid=885876273"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Person Position": "={{ $json.output.Role }}",
-            "Person Linkedin URL": "={{ $json.output['linkedin URL'] }}",
-            "Person Name": "={{ $json.output.Name }}",
-            "Agency Name": "={{ $('Get row(s) in sheet').item.json['Agency Name'] }}"
-          },
-          "matchingColumns": ["Agency Name"],
-          "schema": [
-            { "id": "Agency Name", "displayName": "Agency Name", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
-            { "id": "Followers", "displayName": "Followers", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Posts", "displayName": "Posts", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Instagram Handle", "displayName": "Instagram Handle", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Instagram Link", "displayName": "Instagram Link", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
-            { "id": "Person Name", "displayName": "Person Name", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
-            { "id": "Person Position", "displayName": "Person Position", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
-            { "id": "Person Linkedin URL", "displayName": "Person Linkedin URL", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
-            { "id": "Company Size", "displayName": "Company Size", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
-            { "id": "Personalized message", "displayName": "Personalized message", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
-            { "id": "Notes", "displayName": "Notes", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
-            { "id": "Status", "displayName": "Status", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
-            { "id": "Platform", "displayName": "Platform", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
-            { "id": "Reply", "displayName": "Reply", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
-            { "id": "Follow up msg", "displayName": "Follow up msg", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
-            { "id": "row_number", "displayName": "row_number", "required": false, "defaultMatch": false, "display": true, "type": "number", "canBeUsedToMatch": true, "readOnly": true, "removed": true }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.6,
-      "position": [1360, 656],
-      "id": "750f92bd-838e-485b-ae36-3028da6275cf",
-      "name": "Update row in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": { "id": "xx", "name": "Google Sheets account" }
-      }
-    },
-    { "parameters": { "content": "For instagram message automation\\n" }, "type": "n8n-nodes-base.stickyNote", "position": [-160, 640], "typeVersion": 1, "id": "35c9e27f-0e28-4905-81bd-21c125e67dae", "name": "Sticky Note" },
-    { "parameters": { "content": "Linkedin and other source automation" }, "type": "n8n-nodes-base.stickyNote", "position": [-96, -16], "typeVersion": 1, "id": "2953ee96-5bc6-455e-9f82-26f0dc74f1f4", "name": "Sticky Note1" },
-    { "parameters": {}, "type": "n8n-nodes-base.manualTrigger", "typeVersion": 1, "position": [144, 640], "id": "488d0c17-84e0-46b1-b41f-0d281f73fea2", "name": "When clicking ‘Execute workflow’" },
-    {
-      "parameters": { "amount": 2, "unit": "minutes" },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [1568, 656],
-      "id": "d096cbd3-b62e-4a87-bdee-0eb3d92c32e4",
-      "name": "Wait",
-      "webhookId": "b96bcf31-e18d-4285-81cc-e1386a3b3299"
-    }
-  ],
-  "pinData": {},
-  "connections": {
-    "Google Sheets Trigger": { "main": [ [] ] },
-    "Loop Over Items": { "main": [ [], [ { "node": "HTTP Request", "type": "main", "index": 0 } ] ] },
-    "Append row in sheet": { "main": [ [ { "node": "Loop Over Items", "type": "main", "index": 0 } ] ] },
-    "HTTP Request": { "main": [ [ { "node": "Basic LLM Chain", "type": "main", "index": 0 } ] ] },
-    "Google Gemini Chat Model": { "ai_languageModel": [ [ { "node": "Basic LLM Chain", "type": "ai_languageModel", "index": 0 } ] ] },
-    "Basic LLM Chain": { "main": [ [ { "node": "Append row in sheet", "type": "main", "index": 0 } ] ] },
-    "Structured Output Parser": { "ai_outputParser": [ [ { "node": "Basic LLM Chain", "type": "ai_outputParser", "index": 0 } ] ] },
-    "Loop Over Items1": { "main": [ [], [ { "node": "HTTP Request1", "type": "main", "index": 0 } ] ] },
-    "HTTP Request1": { "main": [ [ { "node": "Basic LLM Chain1", "type": "main", "index": 0 } ] ] },
-    "Google Gemini Chat Model1": { "ai_languageModel": [ [ { "node": "Basic LLM Chain1", "type": "ai_languageModel", "index": 0 } ] ] },
-    "Structured Output Parser1": { "ai_outputParser": [ [ { "node": "Basic LLM Chain1", "type": "ai_outputParser", "index": 0 } ] ] },
-    "Get row(s) in sheet": { "main": [ [ { "node": "Loop Over Items1", "type": "main", "index": 0 } ] ] },
-    "Basic LLM Chain1": { "main": [ [ { "node": "Update row in sheet", "type": "main", "index": 0 } ] ] },
-    "Update row in sheet": { "main": [ [ { "node": "Wait", "type": "main", "index": 0 } ] ] },
-    "When clicking ‘Execute workflow’": { "main": [ [ { "node": "Get row(s) in sheet", "type": "main", "index": 0 } ] ] },
-    "Wait": { "main": [ [ { "node": "Loop Over Items1", "type": "main", "index": 0 } ] ] }
-  },
-  "active": false,
-  "settings": { "executionOrder": "v1" },
-  "versionId": "e9cf4d7a-3c84-4963-8c7e-44150d4db0e3",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "23bec25a036bfe6f254f5387f5f4a90fdfb530e7cdf6c63a6e1c5e7c7140a20e"
-  },
-  "id": "JjILBkqkQrqBtIl2",
-  "tags": []
-}
-'''
 
-doc = json.loads(raw)
-
-def sanitize(obj):
-    if isinstance(obj, dict):
-        new = {}
-        for k, v in obj.items():
-            # Redact sensitive top-level ids
-            if k in ("versionId", "instanceId", "webhookId"):
-                new[k] = "REDACTED"
-                continue
-            # Sanitize credentials blocks
-            if k == "credentials" and isinstance(v, dict):
-                new[k] = {}
-                for cred_name, cred_val in v.items():
-                    new[k][cred_name] = {"id": "REDACTED", "name": "REDACTED"}
-                continue
-            # Sanitize documentId & cached URLs
-            if k == "documentId" and isinstance(v, dict):
-                vv = dict(v)
-                vv["value"] = "YOUR_SHEET_ID"
-                if "cachedResultUrl" in vv and isinstance(vv["cachedResultUrl"], str):
-                    vv["cachedResultUrl"] = re.sub(
-                        r"https://docs\.google\.com/spreadsheets/d/[^/]+/edit",
-                        "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit",
-                        vv["cachedResultUrl"]
-                    )
-                new[k] = sanitize(vv)
-                continue
-            if k in ("cachedResultUrl", "cachedResultName") and isinstance(v, str):
-                v = re.sub(
-                    r"https://docs\.google\.com/spreadsheets/d/[^/]+/edit",
-                    "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit",
-                    v
-                )
-                new[k] = v
-                continue
-            # Sanitize header API keys
-            if k == "headerParameters" and isinstance(v, dict):
-                vv = dict(v)
-                params = vv.get("parameters", [])
-                for p in params:
-                    if isinstance(p, dict):
-                        name = p.get("name", "").lower()
-                        if name in ["x-api-key", "authorization", "api-key", "x-authorization", "x-rapidapi-key", "x-auth-token"]:
-                            p["value"] = "YOUR_API_KEY_HERE"
-                new[k] = vv
-                continue
-            # Recurse
-            new[k] = sanitize(v)
-        return new
-    elif isinstance(obj, list):
-        return [sanitize(x) for x in obj]
-    elif isinstance(obj, str):
-        # Replace any google sheet URL ids in strings
-        s = re.sub(
-            r"https://docs\.google\.com/spreadsheets/d/[^/]+/edit",
-            "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit",
-            obj
-        )
-        return s
-    else:
-        return obj
-
-sanitized = sanitize(doc)
-
-out_path = "/mnt/data/sanitized_n8n_workflow.json"
-with open(out_path, "w", encoding="utf-8") as f:
-    json.dump(sanitized, f, ensure_ascii=False, indent=2)
-
-out_path
